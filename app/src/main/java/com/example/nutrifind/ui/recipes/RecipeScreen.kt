@@ -7,10 +7,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,7 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.nutrifind.data.FavoritesManager
 import com.example.nutrifind.data.model.Recipe
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -186,6 +191,9 @@ fun RecipeGrid(recipes: List<Recipe>, onRecipeClick: (Recipe) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
+    var isFavorite by remember { mutableStateOf(FavoritesManager.isFavorite(recipe)) }
+    val coroutineScope = rememberCoroutineScope()
+
     Card(
         onClick = onClick,
         modifier = Modifier
@@ -212,7 +220,7 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            
+
             // Gradient overlay
             Box(
                 modifier = Modifier
@@ -227,65 +235,91 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
                         )
                     )
             )
-            
-            // Content
-            Column(
+
+            // Favorite Button
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+                    .padding(12.dp)
             ) {
-                Spacer(modifier = Modifier.weight(1f))
-                
-                // Recipe Title
-                Text(
-                    text = recipe.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                
-                Spacer(modifier = Modifier.height(8.dp))
-                
-                // Calories and Time
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                IconButton(
+                    onClick = {
+                        isFavorite = !isFavorite
+                        coroutineScope.launch {
+                            FavoritesManager.toggleFavorite(recipe)
+                        }
+                    },
+                    modifier = Modifier
+                        .size(36.dp)
+                        .align(Alignment.TopEnd)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f))
                 ) {
-                    // Calories (placeholder - you'll need to add this to your Recipe model)
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                        tint = if (isFavorite) Color.Red else Color.White
+                    )
+                }
+
+                // Content
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    // Recipe Title
+                    Text(
+                        text = recipe.title,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Calories and Time
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "🔥",
-                            fontSize = 14.sp
-                        )
-                        Text(
-                            text = "350 kcal", // Placeholder - replace with actual data
-                            fontSize = 12.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                    
-                    // Time
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Text(
-                            text = "⏱",
-                            fontSize = 14.sp
-                        )
-                        Text(
-                            text = "${recipe.readyInMinutes} min",
-                            fontSize = 12.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Medium
-                        )
+                        // Calories (placeholder - you'll need to add this to your Recipe model)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = "🔥",
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = "350 kcal", // Placeholder - replace with actual data
+                                fontSize = 12.sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+
+                        // Time
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = "⏱",
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = "${recipe.readyInMinutes} min",
+                                fontSize = 12.sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
                     }
                 }
             }
