@@ -13,14 +13,26 @@ class RecipeViewModel : ViewModel() {
     
     private val apiKey = "9535fe6534be4f9c85bb979d117f11ec" // Replace with your actual API key
     
-    fun searchRecipes(query: String? = null) {
+    fun searchRecipes(query: String? = null, type: String? = null) {
         viewModelScope.launch {
             _uiState.value = RecipeUiState.Loading
             try {
+                // Convert filter names to Spoonacular API type parameter
+                val mealType = when (type) {
+                    "Main Course" -> "main course"
+                    "Breakfast" -> "breakfast"
+                    "Dessert" -> "dessert"
+                    "Smoothie" -> "drink"
+                    "Salad" -> "salad"
+                    "Soup" -> "soup"
+                    else -> null
+                }
+                
                 val response = ApiClient.recipeApiService.searchRecipes(
                     apiKey = apiKey,
                     query = query,
-                    number = 10
+                    type = mealType,
+                    number = 20
                 )
                 
                 if (response.isSuccessful) {

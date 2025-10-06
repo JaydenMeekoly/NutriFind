@@ -10,6 +10,7 @@ interface RecipeApiService {
     suspend fun searchRecipes(
         @Query("apiKey") apiKey: String,
         @Query("query") query: String? = null,
+        @Query("type") type: String? = null,
         @Query("diet") diet: String? = null,
         @Query("intolerances") intolerances: String? = null,
         @Query("includeIngredients") includeIngredients: String? = null,
