@@ -1,5 +1,3 @@
-Certainly, Joshua. Here's a fully paraphrased version of the NutriFind documentation with all emojis removed and the language adjusted for clarity, professionalism, and completeness:
-
 ---
 
 # NutriFind – Intelligent Nutrition and Recipe Assistant
@@ -23,7 +21,7 @@ NutriFind is a mobile application developed to support healthier eating habits t
 ### Secure Access
 
 - Supports Google Single Sign-On (SSO) for streamlined authentication.
-- Offers biometric login options (fingerprint or facial recognition) for quick and secure access.
+- Offers biometric login options (fingerprint) for quick and secure access. (coming soon)
 
 ### Customized User Profiles
 
@@ -33,16 +31,16 @@ NutriFind is a mobile application developed to support healthier eating habits t
 ### Offline Availability and Synchronization
 
 - Saved recipes and user settings are accessible without an internet connection.
-- Any changes made offline are automatically synchronized once connectivity is restored.
+- Any changes made offline are automatically synchronized once connectivity is restored. (coming soon)
 
-### Notifications
+### Notifications (coming soon)
 
 - Utilizes Firebase Cloud Messaging (FCM) to deliver personalized alerts.
 - Notifications include updates on new recipes, nutritional advice, and reminders for dietary goals.
 
 ### Engagement and Gamification
 
-- Tracks user progress through healthy eating streaks and awards achievement badges.
+- Tracks user progress through healthy eating streaks and awards achievement badges. (coming soon) 
 - Designed to encourage regular app usage and sustained engagement.
 
 ---
@@ -52,7 +50,7 @@ NutriFind is a mobile application developed to support healthier eating habits t
 ### 1. Authentication
 
 - Implements Google SSO via Firebase Authentication.
-- Supports biometric login methods (fingerprint and facial recognition).
+- Supports biometric login methods (fingerprint).
 - Session tokens enable automatic login for returning users.
 
 ### 2. Recipe Storage
@@ -85,7 +83,7 @@ NutriFind is a mobile application developed to support healthier eating habits t
 
 ### 7. Multilingual Support
 
-- Available in English, isiZulu, and Afrikaans.
+- Available in English, isiZulu, and Afrikaans. (maybe)
 - Language can be switched dynamically using `strings.xml`.
 
 ### 8. Settings Interface
@@ -158,7 +156,7 @@ NutriFind/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/<your-username>/NutriFind.git
+   [git clone (https://github.com/JaydenMeekoly/NutriFind.git)]
    cd NutriFind
    ```
 
@@ -195,6 +193,7 @@ NutriFind/
 - Integration of AI-driven meal planning.
 - Social features for recipe sharing and community ratings.
 - Compatibility with wearable fitness devices.
+- Multi-Language mode
 - Voice-enabled search and improved accessibility features.
 
 ---
@@ -205,5 +204,3 @@ NutriFind/
 - Anon. (2025). *Firebase Cloud Messaging and Google Authentication Guide*.
 
 ---
-
-Let me know if you'd like this adapted into a README format, a pitch deck, or a technical specification document.
